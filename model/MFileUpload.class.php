@@ -20,7 +20,7 @@ class MFileUpload {
         }
 
         if (!move_uploaded_file($file, $uploadFile)) {
-            throw new Exception("move upload file failed, file={$this->file}", MFileUpload::E_MOVE_UPLOAD_FILE_FAIL);
+            throw new Exception("move upload file failed, file={$file}", MFileUpload::E_MOVE_UPLOAD_FILE_FAIL);
         }
 
         return $hash;

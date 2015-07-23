@@ -9,6 +9,7 @@ class ModuleFileUpload extends BaseModule {
 
     protected static $uploadRoot;
     protected static $publishRoot;
+    protected static $urlRoot;
 
     public static function setUploadRoot($uploadRoot) {
         self::$uploadRoot = $uploadRoot;
@@ -24,6 +25,14 @@ class ModuleFileUpload extends BaseModule {
 
     public static function publishRoot() {
         return self::$publishRoot;
+    }
+
+    public static function setUrlRoot($urlRoot) {
+        self::$urlRoot = $urlRoot;
+    }
+
+    public static function urlRoot() {
+        return self::$urlRoot;
     }
 
 }
