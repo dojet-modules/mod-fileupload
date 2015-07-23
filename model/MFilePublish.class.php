@@ -8,17 +8,29 @@
  */
 class MFilePublish {
 
-    // const E_MOVE_UPLOAD_FILE_FAIL = 0x01;
+    const E_MAKE_SYMLINK_FAIL = 0x01;
 
     public static function publish($fileHash, $appSpace, $fileSpace, $fileName) {
         $uploadFile = MFileUpload::getUploadFile($fileHash);
-        $publishLink = self::getPublishLink($fileHash, $appSpace, $fileSpace, $fileName);
+
+        $publishHash = static::getPublishHash($appSpace, $fileSpace, $fileName);
+        $publishLink = self::getPublishLink($appSpace, $publishHash, $fileName);
+
+        if (!symlink($uploadFile, $publishLink)) {
+            throw new Exception("make symlink fail", MFilePublish::E_MAKE_SYMLINK_FAIL);
+        }
+
+        return $publishHash;
     }
 
-    public static function getPublishLink($fileHash, $appSpace, $fileSpace, $fileName) {
+    public static function getPublishHash($appSpace, $fileSpace, $fileName) {
+        $publishHash = md5(serialize($appSpace, $fileSpace, $fileName));
+        return $publishHash;
+    }
+
+    public static function getPublishLink($appSpace, $publishHash, $fileName) {
         $publishRoot = ModuleFileUpload::publishRoot();
-        $fileSpaceHash = md5($fileSpace);
-        $link = sprintf('%s/%s/%s/%s/%s', $publishRoot, $appSpace, substr($fileSpaceHash, 0, 2), $fileSpaceHash, $fileName);
+        $link = sprintf('%s/%s/%s/%s/%s', $publishRoot, $appSpace, substr($publishHash, 0, 2), $publishHash, $fileName);
         return $link;
     }
 
