@@ -28,8 +28,16 @@ class MFileUpload {
 
     public static function filepath($hash) {
         $uploadRoot = ModuleFileUpload::config('uploadRoot');
-        $filepath = sprintf('%s/%s/%s/%s', $uploadRoot, substr($hash, 0, 2), substr($hash, 2), $hash);
+        $filepath = sprintf('%s/%s/%s/%s', $uploadRoot,
+            substr($hash, 0, 2), substr($hash, 2, 2), substr($hash, 4));
         return $filepath;
+    }
+
+    public static function url($hash) {
+        $urlRoot = ModuleFileUpload::config('urlRoot');
+        $url = sprintf('%s/%s/%s/%s', $urlRoot,
+            substr($hash, 0, 2), substr($hash, 2, 2), substr($hash, 4));
+        return $url;
     }
 
 }
